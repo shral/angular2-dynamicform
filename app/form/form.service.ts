@@ -70,23 +70,17 @@ export class FormService{
     private convertFormElement(formelements:FormElement<any>[]){
         let group:any = {};
         formelements.forEach(element => {
-            console.log("+element", element);
             switch (element.controlType) {
                 case "arrayobject":
                         let arr: FormGroup[] = [];
                         let locobj = {};
-                        console.log("1", element);
                         element["options"].forEach((option: any) => {
                             option["element"].forEach((e: any) => {
-                                console.log("e", e);
                                 if(e.controlType=== "arrayobject"){
                                     let subgroup = this.convertFormElement([e]);
                                     locobj[e.key] = subgroup[e.key];
                                 }else{
-                                    console.log("e.value",e.value);
                                     if(e.controlType === "arrayelement"){
-                                        console.log("++++e.key",e.key);
-                                        console.log("e.value",e.value);
                                         locobj[e.key] = e.value || [""];
                                     }else{
                                         locobj[e.key] = e.value || ''
@@ -99,7 +93,6 @@ export class FormService{
                     break;
                 case "arrayelement":
                     // console.log("-----arrayelementelement",element);
-                    console.log("2", element);
                     let singleElementValues:FormControl[] = [];
                     // console.log("type",element["type"]);
                     if(element.value){

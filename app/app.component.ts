@@ -4,9 +4,8 @@ import {AppService} from "./app.service";
 @Component({
     selector: 'my-app',
     template: `
-        <h1>My First Angular App</h1>
+        <h1>Dynamic form</h1>
     <div>
-      <h2>Job Application for Heroes</h2>
       <dynamic-form [formelements]="formelements"></dynamic-form>
     </div>
     `,
