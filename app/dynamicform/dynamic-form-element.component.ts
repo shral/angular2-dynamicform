@@ -24,14 +24,18 @@ export class DynamicFormElementComponent{
         return this.form.controls[this.formelement.key].valid;
     }
 
-    addElement(element:any){
+    addElement(element:any, formpart:FormControl[]){
         // console.log("in addelement element",element);
         // console.log("in addelement element",element[0]);
+        var globarForm = this.formcomp.getForm();
+        var valueObject = globarForm.value;
         element.push(element[0]);
         // console.log("in addelement element",element);
         // console.log("form",this.form.controls["arraytest"]["controls"]);
         // console.log("this.formelements",this.formelements);
-        this.form.controls["arraytest"]["controls"].push(this.form.controls["arraytest"]["controls"][0]);
+        // this.form.controls["arraytest"]["controls"].push(this.form.controls["arraytest"]["controls"][0]);
+        console.log("formpart",formpart);
+        formpart["options"].push(formpart["options"][0]);
         // let globalform = this.formcomp.getForm();
         // console.log("globalform=",globalform.value);
 
@@ -39,8 +43,13 @@ export class DynamicFormElementComponent{
         // console.log("globalform",globalform);
         // console.log("this.form",this.form);
         this.formcomp.setForm(this.form);
+        this.formcomp.setFormModel(valueObject);
     }
     addArrayElement(element:any, formpart:FormControl[], form:any){
+        console.log("fompart",formpart);
+        console.log("element",element);
+        formpart = formpart || [];
+        element = element || [];
         element.push("");
         var globarForm = this.formcomp.getForm();
         formpart.push(new FormControl(""));

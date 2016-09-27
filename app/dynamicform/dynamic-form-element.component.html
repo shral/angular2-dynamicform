@@ -13,7 +13,7 @@
                     <df-element [formelement]="element" [form]="form.controls[formelement.key].controls[i]" [formelements]="formelements"></df-element>
                 </div>
             </div>
-            <div (click)="addElement(formelement.options, formelement)">add</div>
+            <div (click)="addElement(formelement.options, formelement, form.controls[formelement.key].controls)">add</div>
         </div>
         <div *ngSwitchCase="'arrayelement'"  [formArrayName]="formelement.key">
             <div *ngFor="let item of formelement.value; let i=index">

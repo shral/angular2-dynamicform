@@ -75,6 +75,7 @@ export class FormService{
                 case "arrayobject":
                         let arr: FormGroup[] = [];
                         let locobj = {};
+                        console.log("1", element);
                         element["options"].forEach((option: any) => {
                             option["element"].forEach((e: any) => {
                                 console.log("e", e);
@@ -84,7 +85,7 @@ export class FormService{
                                 }else{
                                     console.log("e.value",e.value);
                                     if(e.controlType === "arrayelement"){
-                                        // console.log("++++e.key",e.key);
+                                        console.log("++++e.key",e.key);
                                         console.log("e.value",e.value);
                                         locobj[e.key] = e.value || [""];
                                     }else{
@@ -98,18 +99,28 @@ export class FormService{
                     break;
                 case "arrayelement":
                     // console.log("-----arrayelementelement",element);
+                    console.log("2", element);
                     let singleElementValues:FormControl[] = [];
                     // console.log("type",element["type"]);
-                    if(element["type"] === "number"){
-                        element.value.forEach((value:string) => {
-                            singleElementValues.push(new FormControl(parseInt(value)));
-                        });
+                    if(element.value){
+                        if(element["type"] === "number"){
+                            element.value.forEach((value:string) => {
+                                singleElementValues.push(new FormControl(parseInt(value)));
+                            });
+                        }else{
+                            element.value.forEach((value:string) => {
+                                singleElementValues.push(new FormControl(value));
+                            });
+                        }
+                        group[element.key] = new FormArray(singleElementValues);
                     }else{
-                        element.value.forEach((value:string) => {
-                            singleElementValues.push(new FormControl(value));
-                        });
+                        if(element["type"] === "number"){
+
+                            group[element.key] = new FormArray([new FormControl(singleElementValues)]);
+                        }else{
+                            group[element.key] = new FormArray([new FormControl("")]);
+                        }
                     }
-                    group[element.key] = new FormArray(singleElementValues);
                     break;
 
                 default:
@@ -128,7 +139,7 @@ export class FormService{
                 if(Array.isArray(keys[key])){
                     // retobj[key];
                     let tmpArr:FormControl[] = [];
-                    // console.log("+++++++keys[key]",keys[key]);
+                    console.log("+++++++keys[key]",keys[key]);
                     keys[key].forEach((kayvalue:any) => {
                         // retobj[key] = retobj[key] || [];
                         tmpArr.push(new FormControl(kayvalue));

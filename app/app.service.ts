@@ -27,7 +27,6 @@ export class AppService {
                 key: 'firstName',
                 label: 'First name',
                 description:'Testdescriptionfirstname',
-                value: 'Bombasto',
                 required: true,
                 order: 1
             }),
@@ -41,13 +40,13 @@ export class AppService {
                 key: 'arrsingleelement',
                 label: 'TestArray',
                 type: 'text',
-                value: ['testvalue1']
+                value: []
             }),
             new ArrayElement({
                 key: 'arrsingleelement2',
                 label: 'TestArray2',
                 type: 'number',
-                value: [1]
+                value: []
             }),
             new ArrayObject({
                 key: 'arraytest',
