@@ -40,6 +40,9 @@ export class DynamicFormComponent implements OnInit{
     getForm(){
         return this.form;
     }
+    setFormModel(model:any){
+        this.form.patchValue(model);
+    }
     setForm(form:any){
         this.form = form;
         this.form.valueChanges.forEach(fe => {

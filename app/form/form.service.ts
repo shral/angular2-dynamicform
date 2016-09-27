@@ -72,60 +72,73 @@ export class FormService{
         formelements.forEach(element => {
             console.log("+element", element);
             switch (element.controlType) {
-                case "arrayobject":{
+                case "arrayobject":
                         let arr: FormGroup[] = [];
                         let locobj = {};
                         element["options"].forEach((option: any) => {
-                            console.log("option=", option);
                             option["element"].forEach((e: any) => {
                                 console.log("e", e);
                                 if(e.controlType=== "arrayobject"){
                                     let subgroup = this.convertFormElement([e]);
                                     locobj[e.key] = subgroup[e.key];
                                 }else{
-                                    locobj[e.key] = e.value || ''
+                                    console.log("e.value",e.value);
+                                    if(e.controlType === "arrayelement"){
+                                        // console.log("++++e.key",e.key);
+                                        console.log("e.value",e.value);
+                                        locobj[e.key] = e.value || [""];
+                                    }else{
+                                        locobj[e.key] = e.value || ''
+                                    }
                                 }
                             });
-
                             arr.push(new FormGroup(this.getFormControlObject(locobj)));
                         });
                         group[element.key] = new FormArray(arr);
-                    }
                     break;
-                case "arrayelement":{
-                    console.log("-----arrayelementelement",element);
+                case "arrayelement":
+                    // console.log("-----arrayelementelement",element);
                     let singleElementValues:FormControl[] = [];
-                    element.value.forEach((value:string) => {
-                        singleElementValues.push(new FormControl(value));
-                    });
+                    // console.log("type",element["type"]);
+                    if(element["type"] === "number"){
+                        element.value.forEach((value:string) => {
+                            singleElementValues.push(new FormControl(parseInt(value)));
+                        });
+                    }else{
+                        element.value.forEach((value:string) => {
+                            singleElementValues.push(new FormControl(value));
+                        });
+                    }
                     group[element.key] = new FormArray(singleElementValues);
                     break;
-                }
-                default:{
+
+                default:
                     group[element.key] = element.required ? new FormControl(element.value || '', Validators.required)
                         : new FormControl(element.value || '');
-
-                }
             }
         });
         return group;
     }
     private getFormControlObject(keys:any){
         let retobj:any = {};
-        console.log("keys",keys);
-
         Object.keys(keys).forEach(function(key) {
-
-            console.log("key",key);
-            console.log("keytype",typeof keys[key]);
             if(typeof keys[key] != "object"){
                 retobj[key] = new FormControl(keys[key]);
             }else{
-                retobj[key] = keys[key];
+                if(Array.isArray(keys[key])){
+                    // retobj[key];
+                    let tmpArr:FormControl[] = [];
+                    // console.log("+++++++keys[key]",keys[key]);
+                    keys[key].forEach((kayvalue:any) => {
+                        // retobj[key] = retobj[key] || [];
+                        tmpArr.push(new FormControl(kayvalue));
+                    });
+                    retobj[key] = new FormArray(tmpArr);
+                }else{
+                    retobj[key] = keys[key];
+                }
             }
         });
-
-        console.log("retobj",retobj);
         return retobj;
     }
 }

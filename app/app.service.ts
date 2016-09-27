@@ -43,6 +43,12 @@ export class AppService {
                 type: 'text',
                 value: ['testvalue1']
             }),
+            new ArrayElement({
+                key: 'arrsingleelement2',
+                label: 'TestArray2',
+                type: 'number',
+                value: [1]
+            }),
             new ArrayObject({
                 key: 'arraytest',
                 label: 'Array test',
@@ -60,6 +66,13 @@ export class AppService {
                             label:'Test label2',
                             type:'text',
                             value:"testval"
+                        })
+                        ,
+                        new ArrayElement({
+                            key: 'arrsingleelement3',
+                            label: 'TestArray2',
+                            type: 'number',
+                            value: [1]
                         })
                         ,
                         new DropdownList({

@@ -40,24 +40,27 @@ export class DynamicFormElementComponent{
         // console.log("this.form",this.form);
         this.formcomp.setForm(this.form);
     }
-    addArrayElement(element:any, formpart:FormControl[]){
-        // formpart.push(new FormControl(""));
-        var valueObject = this.form.value;
+    addArrayElement(element:any, formpart:FormControl[], form:any){
         element.push("");
-        // console.log("formpart",formpart);
-        // console.log("element",element);
+        var globarForm = this.formcomp.getForm();
+        formpart.push(new FormControl(""));
+        var valueObject = globarForm.value;
         this.form = this.formservice.toFormGroup(this.formelements);
         this.form.patchValue(valueObject);
         this.formcomp.setForm(this.form);
-       // element.push(new FormArray([new FormControl("")]));
+        this.formcomp.setFormModel(valueObject);
     }
-    removeArrayElement(element:any, i:number){
-        if(element.length > i){
-            var valueObject = this.form.value;
-            element.splice(i, 1);
+    removeArrayElement(element:any, i:number, form:any){
+        if(element.value.length > i){
+            var globarForm = this.formcomp.getForm();
+            var valueObject = globarForm.value;
+            element.value.splice(i, 1);
+            form.controls[element.key].value.splice(i,1);
             this.form = this.formservice.toFormGroup(this.formelements);
-            this.form.patchValue(valueObject);
+            // console.log("valueObject",valueObject);
+            // form.patchValue(valueObject);
             this.formcomp.setForm(this.form);
+            this.formcomp.setFormModel(valueObject);
         }
     }
 }

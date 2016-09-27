@@ -7,41 +7,21 @@
         <select *ngSwitchCase="'dropdown'" [id]="formelement.key" [formControlName]="formelement.key">
             <option *ngFor="let opt of formelement.options" [value]="opt.key">{{opt.value}}</option>
         </select>
-        <!--key:{{formelement |json}}-->
-        <!--<br>for array {{formelement|json}}<br>-->
         <div *ngSwitchCase="'arrayobject'"  [formArrayName]="formelement.key">
-            <!--<br>in first<br>-->
             <div *ngFor="let item of formelement.options; let i=index"  [formGroupName]="i" >
-                <!--in seccond-->
-                <!--i:{{i}}-->
-             <!--formelmentoptions:{{item |json}}-->
                 <div *ngFor="let element of item.element">
-                    <!--beforedfcall:element:{{element |json}}<br>-->
-                    <!--lementkey:{{element.key}}, value:{{element.value}}-->
-
                     <df-element [formelement]="element" [form]="form.controls[formelement.key].controls[i]" [formelements]="formelements"></df-element>
-
-                    <!--<div *ngIf="element.controlType === 'text'" >-->
-                        <!--<label>{{element.label}}</label>-->
-                        <!--<input [formControlName]="element.key" [id]="element.key" [type]="element.type" />-->
-                    <!--</div>-->
-                    <!--<div  *ngIf="element.controlType === 'dropdown'" >-->
-                        <!--<label>{{item.label}}</label>-->
-                        <!--<select [id]="element.key" [formControlName]="element.key">-->
-                            <!--<option *ngFor="let opt of element.options" [value]="opt.key">{{opt.value}}</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
                 </div>
             </div>
             <div (click)="addElement(formelement.options, formelement)">add</div>
         </div>
         <div *ngSwitchCase="'arrayelement'"  [formArrayName]="formelement.key">
-                formelement:{{formelement|json}}
             <div *ngFor="let item of formelement.value; let i=index">
-                <input formControlName="{{i}}" [type]="formelement.type">
-                <span (click)="removeArrayElement(formelement.value, i)">x</span>
+                <input *ngIf="formelement.type === 'number'" formControlName="{{i}}" type="number">
+                <input *ngIf="formelement.type != 'number'" formControlName="{{i}}" [type]="formelement.type">
+                <span (click)="removeArrayElement(formelement, i, form)">x</span>
             </div>
-            <div (click)="addArrayElement(formelement.value, form.controls[formelement.key].controls)">add</div>
+            <div (click)="addArrayElement(formelement.value, form.controls[formelement.key].controls, form)">add</div>
         </div>
         <span class="description">{{formelement.description}}</span>
     </div>
